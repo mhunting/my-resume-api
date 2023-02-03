@@ -9,7 +9,7 @@ def lambda_handler(event, context):
     client = boto3.client('dynamodb')
     
     ip = event['requestContext']['identity']['sourceIp']
-    client.put_item(TableName='mh-resume', Item={'pk':{'S':'visitor'},'sk':{'S': ip}, 'date':{'S': datetime.now(timezone.utc).strftime('%Y%m%d')}})
+    client.put_item(TableName='mh-resume', Item={'pk':{'S':'visitor'},'sk':{'S': ip}, 'date':{'S': datetime.utcnow().isoformat()}})
     try:
         response = client.update_item(TableName='mh-resume',
             Key={'pk': {'S':'visitor-stats'}, 'sk':{'S':'total-count'}},

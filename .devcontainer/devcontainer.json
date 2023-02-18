@@ -3,7 +3,7 @@
 {
 	"name": "Docker in Docker",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/base:bullseye",
+	"image": "megnmike/python-aws-devcontainer:latest",
 
 	"features": {
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {
@@ -19,11 +19,14 @@
 		"ghcr.io/customink/codespaces-features/sam-cli:1": {
 			
 		}
+		//,
+		// "ghcr.io/meaningful-ooo/devcontainer-features/homebrew:2":{}
 	},
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"ms-python.python"
+				"ms-python.python",
+"littlefoxteam.vscode-python-test-adapter"
 			]
 		}
 	},
@@ -32,11 +35,16 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "git config --global --add safe.directory /workspaces/my-resume-api"
+	"postCreateCommand": "pip install -r /workspaces/my-resume-api/lambda-python3.9/tests/requirements.txt",
+	"remoteEnv": {		
+		"AWS_VAULT_BACKEND": "file"		
+	}
 
 	// Configure tool-specific properties.
 	// "customizations": {},
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
+	"mounts": ["source=C:/Users/mike_/.aws,target=/home/vscode/.aws,type=bind,consistency=cached"]
+
 }

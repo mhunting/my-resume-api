@@ -40,3 +40,6 @@ def lambda_handler(event, context):
         },
             'visitorCount':0
         }
+
+def test_fake_business_logic(foo):
+    return len(foo)%2==0

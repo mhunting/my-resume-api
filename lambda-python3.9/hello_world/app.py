@@ -9,7 +9,9 @@ def lambda_handler(event, context):
     client = boto3.client('dynamodb')
     
     ip = event['requestContext']['identity']['sourceIp']
-    host = event['headers']['x-forwarded-for']
+    print(json.dumps(event['headers'])) 
+    origin = event['headers']['origin']
+    print(origin)
     client.put_item(TableName='mh-resume', Item={'pk':{'S':'visitor'},'sk':{'S': ip}, 'date':{'S': datetime.utcnow().isoformat()}})
     try:
         response = client.update_item(TableName='mh-resume',
@@ -21,7 +23,7 @@ def lambda_handler(event, context):
         "statusCode": 200,
         "headers": {
             "Access-Control-Allow-Headers" : "Content-Type",
-            "Access-Control-Allow-Origin": "https://www.mh-resume.net"  if host == "www.mh-resume.net" else "https://mh-resume.net",
+            "Access-Control-Allow-Origin": "https://www.mh-resume.net"  if origin == "https://www.mh-resume.net" else "https://mh-resume.net",
             "Access-Control-Allow-Methods": "OPTIONS,GET"
         },
         "body": json.dumps({
